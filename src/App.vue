@@ -1,6 +1,6 @@
 <script setup>
 import Header from './components/Header.vue'
-import CardWrapper from './components/CardWrapper.vue'
+import CardList from './components/CardList.vue'
 import Drawer from './components/Drawer.vue'
 </script>
 
@@ -10,7 +10,7 @@ import Drawer from './components/Drawer.vue'
     <Header />
     <div class="p-10">
       <h2 class="text-3xl font-bold mb-8">Все кроссовки</h2>
-      <CardWrapper />
+      <CardList />
     </div>
   </div>
 </template>
