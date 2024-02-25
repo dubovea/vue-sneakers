@@ -8,22 +8,19 @@ defineProps({
 const onClickAdd = () => {
   alert('123')
 }
-const onClickFavorite = () => {
-  alert('123')
-}
 </script>
 <template>
   <div class="grid grid-cols-4 gap-5">
     <Card
       v-for="item in items"
       :key="item.id"
+      :id="item.id"
       :title="item.title"
       :imageUrl="item.imageUrl"
       :price="item.price"
-      isFavorite
-      isAdded
+      :isFavorite="item.isFavorite"
+      :isAdded="item.isAdded"
       :onClickAdd="onClickAdd"
-      :onClickFavorite="onClickFavorite"
     />
   </div>
 </template>

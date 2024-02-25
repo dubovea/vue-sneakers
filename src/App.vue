@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, provide } from 'vue'
 import axios from 'axios'
 
 import Header from './components/Header.vue'
@@ -27,6 +27,24 @@ const fetchItems = async () => {
     console.log('Data load error', e)
   }
 }
+const fetchFavorites = async () => {
+  try {
+    const { data: favorites } = await axios.get('https://604781a0efa572c1.mokky.dev/favorites'),
+      mapFavorites = new Map()
+    favorites.forEach((favorite) => {
+      if (!mapFavorites.has(favorite.parentId)) {
+        mapFavorites.set(favorite.parentId, favorite)
+      }
+    })
+
+    items.value = items.value.map((item) => ({
+      ...item,
+      isFavorite: mapFavorites.has(item.id)
+    }))
+  } catch (e) {
+    console.log('Data load error', e)
+  }
+}
 const handleChangeSort = (event) => {
   filters.value.sortParam = event.target.value
 }
@@ -34,8 +52,15 @@ const handleChangeSearch = (event) => {
   filters.value.searchParam = event.target.value
 }
 
-onMounted(fetchItems)
+onMounted(async () => {
+  await fetchItems()
+  await fetchFavorites()
+})
 watch(filters.value, fetchItems)
+
+provide('addToFavorite', (id) => {
+  debugger
+})
 </script>
 
 <template>
