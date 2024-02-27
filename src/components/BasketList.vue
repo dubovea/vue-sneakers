@@ -1,11 +1,19 @@
 <script setup>
-import BasketItem from './BasketItem.vue'
+import { inject } from 'vue';
+import BasketItem from './BasketItem.vue';
+const { cartItems, removeFromCart } = inject('drawerProvider');
 </script>
+
 <template>
   <div class="flex flex-col gap-4">
-    <BasketItem />
-    <BasketItem />
-    <BasketItem />
-    <BasketItem />
+    <BasketItem
+      v-for="item in cartItems"
+      :key="item.id"
+      :parentId="item.parentId"
+      :title="item.title"
+      :imageUrl="item.imageUrl"
+      :price="item.price"
+      @on-click-remove="() => removeFromCart(item)"
+    />
   </div>
 </template>

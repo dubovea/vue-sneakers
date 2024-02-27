@@ -1,13 +1,19 @@
 <script setup>
-import Card from './Card.vue'
+import Card from './Card.vue';
 
 defineProps({
   items: Array
-})
+});
 
-const onClickAdd = () => {
-  alert('123')
-}
+const emit = defineEmits(['addToFavorite', 'addToCart', 'removeFromCart']);
+
+const actionAddOrRemove = (item) => {
+  if (item.isAdded) {
+    emit('removeFromCart', item);
+    return;
+  }
+  emit('addToCart', item);
+};
 </script>
 <template>
   <div class="grid grid-cols-4 gap-5">
@@ -20,7 +26,8 @@ const onClickAdd = () => {
       :price="item.price"
       :isFavorite="item.isFavorite"
       :isAdded="item.isAdded"
-      :onClickAdd="onClickAdd"
+      :onClickFavorite="() => emit('addToFavorite', item)"
+      :onClickAdd="() => actionAddOrRemove(item)"
     />
   </div>
 </template>

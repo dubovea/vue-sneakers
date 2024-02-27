@@ -1,3 +1,10 @@
+<script setup>
+import { inject } from 'vue';
+defineProps({
+  totalPrice: Number
+});
+const { changeDrawerVisible } = inject('drawerProvider');
+</script>
 <template>
   <header class="flex justify-between border-b border-slate-200 px-8 py-8">
     <div class="flex items-center gap-4">
@@ -9,9 +16,9 @@
     </div>
 
     <ul class="flex items-center gap-8">
-      <li class="header-item">
+      <li class="header-item" @click="changeDrawerVisible">
         <img src="/cart.svg" alt="Cart" />
-        <span>1205 руб.</span>
+        <span>{{ totalPrice }} руб.</span>
       </li>
       <li class="header-item">
         <img src="/heart.svg" alt="Cart" />

@@ -1,6 +1,10 @@
 <script setup>
-import DrawerHeader from './DrawerHeader.vue'
-import BasketList from './BasketList.vue'
+import DrawerHeader from './DrawerHeader.vue';
+import BasketList from './BasketList.vue';
+const emit = defineEmits(['createOrder']);
+defineProps({
+  totalPrice: Number
+});
 </script>
 <template>
   <div class="fixed top-0 left-0 h-full w-full bg-black z-10 opacity-70"></div>
@@ -13,16 +17,17 @@ import BasketList from './BasketList.vue'
       <div class="flex gap-2">
         <span>Итого:</span>
         <div class="flex-1 border-b border-dashed"></div>
-        <b> 12990 Р</b>
+        <b> {{ totalPrice }} Р</b>
       </div>
       <div class="flex gap-2">
         <span>Налог 5%:</span>
         <div class="flex-1 border-b border-dashed"></div>
-        <b> 990 Р</b>
+        <b> {{ Math.round(totalPrice * 0.05) }} Р</b>
       </div>
 
       <button
-        disabled
+        :disabled="totalPrice === 0"
+        @click="emit('createOrder')"
         class="w-full mt-4 rounded-xl py-3 bg-lime-500 hover:bg-lime-600 active:bg-lime-700 disabled:bg-slate-300 cursor-pointer transition"
       >
         Оформить заказ
