@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, inject, ref, watch } from 'vue';
+import debouce from 'lodash.debounce';
 import axios from 'axios';
 
 import CardList from '../components/CardList.vue';
@@ -16,9 +17,9 @@ const items = ref([]),
 const handleChangeSort = (event) => {
   filters.value.sortParam = event.target.value;
 };
-const handleChangeSearch = (event) => {
+const handleChangeSearch = debouce((event) => {
   filters.value.searchParam = event.target.value;
-};
+}, 250);
 
 const fetchItems = async () => {
   try {
@@ -40,8 +41,8 @@ const fetchFavorites = async () => {
     const { data: favorites } = await axios.get(`${serviceUrl}/favorites`),
       mapFavorites = new Map();
     favorites.forEach((favorite) => {
-      if (!mapFavorites.has(favorite.parentId)) {
-        mapFavorites.set(favorite.parentId, favorite);
+      if (!mapFavorites.has(favorite.item_id)) {
+        mapFavorites.set(favorite.item_id, favorite);
       }
     });
 

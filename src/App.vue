@@ -5,8 +5,6 @@ import axios from 'axios';
 import Header from './components/Header.vue';
 import Drawer from './components/Drawer.vue';
 
-import Home from './pages/Home.vue';
-
 const serviceUrl = 'https://110fd33f1ed87123.mokky.dev';
 
 const cartItems = ref([]),
@@ -28,14 +26,13 @@ const fetchCartItems = async () => {
 const addToFavorite = (item) => {
   item.isFavorite = true;
   const itemId = item.id;
-  axios.get(`${serviceUrl}/favorites?parentId=${itemId}`).then(({ data }) => {
+  axios.get(`${serviceUrl}/favorites?item_id=${itemId}`).then(({ data }) => {
     if (!data.length) {
       axios
         .post(`${serviceUrl}/favorites`, {
-          parentId: item.id
+          item_id: itemId
         })
         .then(({ data }) => {
-          item.favoriteId = data.id;
           item.isFavorite = true;
         })
         .catch((e) => {
@@ -98,32 +95,6 @@ const removeFromCart = (item) => {
   });
 };
 
-const clearCart = () => {
-  axios.get(`${serviceUrl}/cart`).then(({ data }) => {
-    if (!data.length) {
-      return;
-    }
-    let promises = data.map((cartItem) => {
-      axios.delete(`${serviceUrl}/cart/${cartItem.id}`).catch((e) => {
-        console.log('Cart item delete error', e);
-      });
-    });
-    Promise.allSettled(promises).then((promise) => {});
-  });
-};
-
-const createOrder = () => {
-  axios
-    .post(`${serviceUrl}/orders`, { items: cartItems.value, totalPrice: totalPrice.value })
-    .then(({ data }) => {
-      clearCart();
-      cartItems.value = [];
-    })
-    .catch((e) => {
-      console.log('Order create error', e);
-    });
-};
-
 onMounted(async () => {
   await fetchCartItems();
 });
@@ -139,7 +110,7 @@ provide('drawerProvider', {
 
 <template>
   <div class="bg-white w-4/5 m-auto rounded-xl shadow-xl mt-14">
-    <Drawer v-if="drawerOpen" :total-price="totalPrice" @create-order="createOrder" />
+    <Drawer v-if="drawerOpen" :total-price="totalPrice" />
     <Header :total-price="totalPrice" />
     <div class="p-10">
       <router-view></router-view>
