@@ -11,8 +11,12 @@ const cartItems = ref([]),
   drawerOpen = ref(false),
   totalPrice = computed(() => cartItems.value.reduce((acc, item) => acc + item.price, 0));
 
-const changeDrawerVisible = () => {
-  drawerOpen.value = !drawerOpen.value;
+const openDrawer = () => {
+  drawerOpen.value = true;
+};
+
+const closeDrawer = () => {
+  drawerOpen.value = false;
 };
 
 const fetchCartItems = async () => {
@@ -101,10 +105,12 @@ onMounted(async () => {
 
 provide('drawerProvider', {
   cartItems,
+  drawerOpen,
   addToCart,
   addToFavorite,
   removeFromCart,
-  changeDrawerVisible
+  openDrawer,
+  closeDrawer
 });
 </script>
 

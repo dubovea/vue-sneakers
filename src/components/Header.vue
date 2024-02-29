@@ -3,7 +3,7 @@ import { inject } from 'vue';
 defineProps({
   totalPrice: Number
 });
-const { changeDrawerVisible } = inject('drawerProvider');
+const { openDrawer } = inject('drawerProvider');
 </script>
 <template>
   <header class="flex justify-between border-b border-slate-200 px-8 py-8">
@@ -18,7 +18,7 @@ const { changeDrawerVisible } = inject('drawerProvider');
     >
 
     <ul class="flex items-center gap-8">
-      <li class="header-item" @click="changeDrawerVisible">
+      <li class="header-item" @click="openDrawer">
         <img src="/cart.svg" alt="Cart" />
         <span>{{ totalPrice }} руб.</span>
       </li>

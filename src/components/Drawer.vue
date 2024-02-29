@@ -5,7 +5,7 @@ import DrawerHeader from './DrawerHeader.vue';
 import BasketList from './BasketList.vue';
 import InfoBlock from './InfoBlock.vue';
 
-const { cartItems } = inject('drawerProvider');
+const { cartItems, closeDrawer } = inject('drawerProvider');
 const props = defineProps({
   totalPrice: Number
 });
@@ -13,7 +13,6 @@ const numberOrder = ref(null),
   isCreated = ref(false);
 
 const serviceUrl = 'https://110fd33f1ed87123.mokky.dev';
-
 const createOrder = () => {
   axios
     .post(`${serviceUrl}/orders`, { items: cartItems.value, totalPrice: props.totalPrice })
@@ -43,7 +42,7 @@ const clearCart = () => {
 };
 </script>
 <template>
-  <div class="fixed top-0 left-0 h-full w-full bg-black z-10 opacity-70"></div>
+  <div class="fixed top-0 left-0 h-full w-full bg-black z-10 opacity-70" @click="closeDrawer"></div>
   <div class="bg-white w-96 h-full fixed right-0 top-0 z-20 p-8">
     <DrawerHeader />
 
