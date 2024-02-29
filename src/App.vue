@@ -142,7 +142,7 @@ provide('drawerProvider', {
     <Drawer v-if="drawerOpen" :total-price="totalPrice" @create-order="createOrder" />
     <Header :total-price="totalPrice" />
     <div class="p-10">
-      <Home />
+      <router-view></router-view>
     </div>
   </div>
 </template>
